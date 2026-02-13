@@ -1,16 +1,16 @@
-import { Product } from "../models/productModel.js";
+import { Order } from "../models/orderModel.js";
 
 /* ===============================
-    GET ALL PRODUCTS (Admin Only)
+    GET ALL ORDERS (Admin Only)
 =============================== */
 
-const getAllProducts = async (req , res) => {
+const getAllOrders = async (req , res) => {
 
     try {
-        const products = await Product.find();
+        const order = await Order.find();
         res.status(200).json({
-            message: 'Admin Get All Products Successfully!',
-            products
+            message: 'Admin Get All Orders Successfully!',
+            order
         });
     } catch (error) {
         res.status(500).json({
@@ -21,23 +21,23 @@ const getAllProducts = async (req , res) => {
 }
 
 /* ===============================
-    GET PRODUCT BY ID (Admin Only)
+    GET ORDER BY ID (Admin Only)
 =============================== */
 
-const getProductById = async (req , res) => {
+const getOrderById = async (req , res) => {
 
     try {
-        const product = await Product.findById(req.params.id);
+        const order = await Order.findById(req.params.id);
 
-        if (!product) {
+        if (!order) {
             return res.status(404).json({ 
-                message: "Product not found" 
+                message: "Order not found" 
             });
         }
 
         res.status(200).json({
-            message: 'Admin Get Product By Id Successfully!',
-            product
+            message: 'Admin Get Order By Id Successfully!',
+            order
         });
     } catch (error) {
         res.status(500).json({
@@ -48,15 +48,15 @@ const getProductById = async (req , res) => {
 }
 
 /* ===============================
-    CREATE PRODUCT (User + Admin)
+    CREATE ORDER (User + Admin)
 =============================== */
 
-const createProduct = async (req , res) => {
+const createOrder = async (req , res) => {
 
     try {
         const { name, description, price, category } = req.body;
 
-        const product = await Product.create({
+        const order = await Order.create({
             name,
             description,
             price,
@@ -64,8 +64,8 @@ const createProduct = async (req , res) => {
         })
 
         res.status(201).json({
-            message: "Product created successfully!",
-            product,
+            message: "Order created successfully!",
+            order,
         });
     } catch (error) {
         res.status(500).json({
@@ -76,27 +76,27 @@ const createProduct = async (req , res) => {
 }
 
 /* ===============================
-    UPDATE PRODUCT (User + Admin)
+    UPDATE ORDER (User + Admin)
 =============================== */
 
-const updateProductById = async (req , res) => {
+const updateOrderById = async (req , res) => {
     
     try {
-        const product = await Product.findByIdAndUpdate(
+        const order = await Order.findByIdAndUpdate(
             req.params.id,
             req.body,
             { new: true }
         )
 
-        if (!product) {
+        if (!order) {
             return res.status(404).json({
-                message: "Product not found"
+                message: "Order not found"
             });
         }
 
         res.status(200).json({
-            message: "Product updated successfully!",
-            product,
+            message: "Order updated successfully!",
+            order,
         });
     } catch (error) {
         res.status(500).json({
@@ -107,23 +107,23 @@ const updateProductById = async (req , res) => {
 }
 
 /* ===============================
-    DELETE PRODUCT (User + Admin)
+    DELETE ORDER (User + Admin)
 =============================== */
 
-const deleteProductById = async (req , res) => {
+const deleteOrderById = async (req , res) => {
     
     try {
-        const product = await Product.findByIdAndDelete(req.params.id)
+        const order = await Order.findByIdAndDelete(req.params.id)
 
-        if (!product) {
+        if (!order) {
             return res.status(404).json({
-                message: "Product not found"
+                message: "Order not found"
             });
         }
 
         res.status(200).json({
-            message: "Product deleted successfully!",
-            product,
+            message: "Order deleted successfully!",
+            order,
         });
     } catch (error) {
         res.status(500).json({
@@ -134,9 +134,9 @@ const deleteProductById = async (req , res) => {
 }
 
 export {
-    getAllProducts,
-    getProductById,
-    createProduct,
-    updateProductById,
-    deleteProductById,
+    getAllOrders,
+    getOrderById,
+    createOrder,
+    updateOrderById,
+    deleteOrderById,
 };

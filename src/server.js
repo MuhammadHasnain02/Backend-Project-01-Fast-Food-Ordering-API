@@ -107,9 +107,13 @@ import express from "express";
 import mongoose from "mongoose";
 
 import { authMiddleware } from "./middleware/authMiddleware.js";
-import { roleMiddleware } from "./middleware/roleMiddleware.js";
+// import { roleMiddleware } from "./middleware/roleMiddleware.js";
+
+// ============ ROUTES ============
+
 import { userRoutes } from "./routes/userRoutes.js";
 import { productRoutes } from "./routes/productRoutes.js";
+import { orderRoutes } from "./routes/orderRoutes.js";
 
 const app = express();
 
@@ -139,13 +143,10 @@ app.use('/api' , userRoutes)
 
 app.use(authMiddleware);
 
-// -------------- Role Middleware --------------
-
-// app.use(roleMiddleware(['user' , 'admin']));
-
-// -------------- Admin Routes --------------
+// -------------- Product Order Routes --------------
 
 app.use('/api/product' , productRoutes)
+app.use('/api/order' , orderRoutes)
 
 // -------------- Server Listner --------------
 

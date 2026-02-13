@@ -2,47 +2,49 @@ import express from "express";
 import { roleMiddleware } from "../middleware/roleMiddleware.js";
 
 import {
-    createProduct,
-    deleteProductById,
-    getAllProducts,
-    getProductById,
-    updateProductById,
-} from "../controllers/productController.js";
+    getAllOrders,
+    updateOrderStatus,
+    getMyOrders,
+    createOrder,
+    deleteOrderById,
+} from "../controllers/orderController.js";
 
-export const productRoutes = express.Router();
-
-/* =================
-    User + Admin
-================= */
-
-productRoutes.get(
-    "/",
-    roleMiddleware( ["user", "admin"] ),
-    getAllProducts
-);
-
-productRoutes.get(
-    "/:id",
-    roleMiddleware( ["user", "admin"] ),
-    getProductById
-);
+export const orderRoutes = express.Router();
 
 /* =================
     Admin Only
 ================= */
 
-productRoutes.post(
+orderRoutes.get(
     "/",
     roleMiddleware( ["admin"] ),
-    createProduct
+    getAllOrders
 );
-productRoutes.put(
-    "/:id",
-    roleMiddleware( ["admin"] ),
-    updateProductById
+
+orderRoutes.put(
+    "/update/:id",
+    roleMiddleware(["admin"]),
+    updateOrderStatus
 );
-productRoutes.delete(
+
+/* =================
+    User + Admin
+================= */
+
+orderRoutes.get(
+    "/my-orders",
+    roleMiddleware(["user"]),
+    getMyOrders
+);
+
+orderRoutes.post(
+    "/",
+    roleMiddleware( ["user", "admin"] ),
+    createOrder
+);
+
+orderRoutes.delete(
     "/:id",
-    roleMiddleware( ["admin"] ),
-    deleteProductById
+    roleMiddleware( ["user", "admin"] ),
+    deleteOrderById
 );

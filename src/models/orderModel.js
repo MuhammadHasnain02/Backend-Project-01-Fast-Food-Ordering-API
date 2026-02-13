@@ -2,18 +2,22 @@ import mongoose from "mongoose";
 
 // -------------- Order Collection Schema ----------------
 
-const OrderCollectionSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  price: Number,
-  category: String,
-  isAvailable: Boolean,
-  createdAt: Date,
+const OrderSchema = new mongoose.Schema({
+  user: { type: ObjectId, ref: "User" },
+  items: [
+    {
+      product: { type: ObjectId, ref: "Product" },
+      quantity: Number
+    }
+  ],
+  totalPrice: Number,
+  status: { type: String, enum: ["pending", "preparing", "delivered"] },
+  createdAt: Date
 });
 
 // -------------- Define Model ----------------
 
-export const OrderCollection = mongoose.model(
-  "OrderCollection",
-  OrderCollectionSchema,
+export const Order = mongoose.model(
+  "Order",
+  OrderSchema,
 );
