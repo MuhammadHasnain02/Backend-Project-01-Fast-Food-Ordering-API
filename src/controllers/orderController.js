@@ -1,4 +1,5 @@
 import { Order } from "../models/orderModel.js";
+import { Product } from "../models/productModel.js";
 
 /* ===============================
     GET ALL ORDERS (Admin Only)
@@ -7,10 +8,11 @@ import { Order } from "../models/orderModel.js";
 const getAllOrders = async (req , res) => {
 
     try {
-        const order = await Order.find();
+        const orders = await Order.find();
+
         res.status(200).json({
             message: 'Admin Get All Orders Successfully!',
-            order
+            orders
         });
     } catch (error) {
         res.status(500).json({
@@ -24,10 +26,10 @@ const getAllOrders = async (req , res) => {
     GET ORDER BY ID (Admin Only)
 =============================== */
 
-const getOrderById = async (req , res) => {
+const getMyOrders = async (req , res) => {
 
     try {
-        const order = await Order.findById(req.params.id);
+        const order = await Order.find({ user: req.user._id });
 
         if (!order) {
             return res.status(404).json({ 
@@ -54,17 +56,28 @@ const getOrderById = async (req , res) => {
 const createOrder = async (req , res) => {
 
     try {
-        const { name, description, price, category } = req.body;
+        const { productId, quantity } = req.body;
+
+        const product = await Product.findById(productId)
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found",
+            });
+        }
+
+        const totalPrice = product.price * quantity
 
         const order = await Order.create({
-            name,
+            user: req.user._id,
             description,
-            price,
-            category,
+            product: productId,
+            quantity,
+            totalPrice,
         })
 
         res.status(201).json({
-            message: "Order created successfully!",
+            message: "Order placed successfully!",
             order,
         });
     } catch (error) {
@@ -76,15 +89,15 @@ const createOrder = async (req , res) => {
 }
 
 /* ===============================
-    UPDATE ORDER (User + Admin)
+    UPDATE ORDER (Admin)
 =============================== */
 
-const updateOrderById = async (req , res) => {
+const updateOrderStatus = async (req , res) => {
     
     try {
         const order = await Order.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            { status: req.body.status },
             { new: true }
         )
 
@@ -135,8 +148,8 @@ const deleteOrderById = async (req , res) => {
 
 export {
     getAllOrders,
-    getOrderById,
+    getMyOrders,
     createOrder,
-    updateOrderById,
+    updateOrderStatus,
     deleteOrderById,
 };

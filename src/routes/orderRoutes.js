@@ -32,7 +32,7 @@ orderRoutes.put(
 ================= */
 
 orderRoutes.get(
-    "/my-orders",
+    "/my-orders/:id",
     roleMiddleware(["user"]),
     getMyOrders
 );

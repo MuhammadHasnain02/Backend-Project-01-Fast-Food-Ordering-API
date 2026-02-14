@@ -107,7 +107,6 @@ import express from "express";
 import mongoose from "mongoose";
 
 import { authMiddleware } from "./middleware/authMiddleware.js";
-// import { roleMiddleware } from "./middleware/roleMiddleware.js";
 
 // ============ ROUTES ============
 
