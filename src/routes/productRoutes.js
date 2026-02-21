@@ -29,6 +29,7 @@ import {
     getProductById,
     updateProductById,
 } from "../controllers/productController.js";
+import { upload } from "../middleware/uploadMiddleware.js";
 
 export const productRoutes = express.Router();
 
@@ -55,6 +56,7 @@ productRoutes.get(
 productRoutes.post(
     "/",
     roleMiddleware( ["admin"] ),
+    upload.single('image'),
     createProduct
 );
 productRoutes.put(

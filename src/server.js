@@ -134,6 +134,9 @@ app.get("/api", (req, res) => {
     res.send("Fast-Food Ordering Backend API System :)");
 });
 
+// -------------- Static Folder --------------
+app.use("/uploads", express.static("uploads"));
+
 // -------------- User Routes --------------
 
 app.use('/api' , userRoutes)

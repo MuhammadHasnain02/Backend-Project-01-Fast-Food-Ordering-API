@@ -91,17 +91,27 @@ const createProduct = async (req , res) => {
     try {
         const { name, description, price, category } = req.body;
 
+        if (!req.file) {
+
+            return res.status(400).json({
+                message: "Product image is required"
+            });
+
+        }
+
         const product = await Product.create({
-            name,
-            description,
-            price,
-            category,
+            name, 
+            description, 
+            price, 
+            category, 
+            image: req.file.filename, 
         })
 
         res.status(201).json({
             message: "Product created successfully!",
             product,
         });
+
     } catch (error) {
         res.status(500).json({
             message: "Server Error" 

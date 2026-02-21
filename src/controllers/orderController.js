@@ -70,9 +70,12 @@ const createOrder = async (req , res) => {
 
         const order = await Order.create({
             user: req.user._id,
-            description,
-            product: productId,
-            quantity,
+            items: [
+                {
+                    productId: productId,
+                    quantity: quantity
+                }
+            ],
             totalPrice,
         })
 
@@ -80,6 +83,7 @@ const createOrder = async (req , res) => {
             message: "Order placed successfully!",
             order,
         });
+
     } catch (error) {
         res.status(500).json({
             message: "Server Error" 
@@ -93,7 +97,7 @@ const createOrder = async (req , res) => {
 =============================== */
 
 const updateOrderStatus = async (req , res) => {
-    
+
     try {
         const order = await Order.findByIdAndUpdate(
             req.params.id,
