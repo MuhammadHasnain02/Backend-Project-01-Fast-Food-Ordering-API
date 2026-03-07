@@ -29,7 +29,8 @@ const getAllOrders = async (req , res) => {
 const getMyOrders = async (req , res) => {
 
     try {
-        const order = await Order.find({ user: req.user._id });
+        const order = await Order.find({ user: req.user.userId });
+        // const order = await Order.find({ user: req.user._id });
 
         if (!order) {
             return res.status(404).json({ 
@@ -69,7 +70,8 @@ const createOrder = async (req , res) => {
         const totalPrice = product.price * quantity
 
         const order = await Order.create({
-            user: req.user._id,
+            user: req.user.userId,
+            // user: req.user._id,
             items: [
                 {
                     productId: productId,

@@ -106,13 +106,18 @@ dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 
-import { authMiddleware } from "./middleware/authMiddleware.js";
+// ============ Middleware ============
 
-// ============ ROUTES ============
+import { authMiddleware } from "./middleware/authMiddleware.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
+
+// ============ Routes ============
 
 import { userRoutes } from "./routes/userRoutes.js";
 import { productRoutes } from "./routes/productRoutes.js";
 import { orderRoutes } from "./routes/orderRoutes.js";
+import { router as categoryRoutes } from "./routes/categoryRoutes.js";
+
 
 const app = express();
 
@@ -120,7 +125,7 @@ app.use(express.json());
 
 // -------------- Define Mongoose Server --------------
 
-mongoose.connect("mongodb://127.0.0.1:27017/Auth-System")
+mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("DB connected!");
     })
@@ -128,27 +133,25 @@ mongoose.connect("mongodb://127.0.0.1:27017/Auth-System")
         console.log(err);
     });
 
-// -------------- Home Page --------------
-
-app.get("/api", (req, res) => {
-    res.send("Fast-Food Ordering Backend API System :)");
-});
-
 // -------------- Static Folder --------------
 app.use("/uploads", express.static("uploads"));
 
 // -------------- User Routes --------------
-
-app.use('/api' , userRoutes)
+app.use('/api/auth' , userRoutes)
 
 // -------------- Auth Middleware --------------
+// All routes require authentication
 
 app.use(authMiddleware);
 
-// -------------- Product Order Routes --------------
+// -------------- Mount Routes --------------
 
 app.use('/api/product' , productRoutes)
 app.use('/api/order' , orderRoutes)
+app.use('/api/categories' , categoryRoutes)
+
+// -------------- Error handler --------------
+app.use(errorHandler);
 
 // -------------- Server Listner --------------
 

@@ -69,7 +69,7 @@ const productSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      // required: true,
+      required: true,
       default: 'https://www.shutterstock.com/image-vector/missing-picture-page-website-design-600nw-1552421075.jpg',
     },
   },

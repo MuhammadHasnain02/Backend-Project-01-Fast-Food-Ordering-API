@@ -25,20 +25,28 @@ import mongoose from "mongoose";
 
 // -------------- User Schema ----------------
 
-const UserSchema = new mongoose.Schema({
-  name: String,
-  email: {
-    type: String,
-    unique: true,
+const UserSchema = new mongoose.Schema(
+  {
+    name: String,
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["user", "manager" , "admin"],
+      default: "user",
+    },
   },
-  password: String,
-  role: {
-    type: String,
-    enum: ["user", "manager" , "admin"],
-    default: "user",
+  { 
+    timestamps: true
   },
-  createdAt: Date,
-});
+);
 
 // -------------- Define Model ----------------
 

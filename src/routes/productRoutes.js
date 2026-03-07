@@ -36,36 +36,15 @@ export const productRoutes = express.Router();
 /* =================
     User + Admin
 ================= */
+// roleMiddleware( ["user" , "manager" , "admin"] ),
 
-productRoutes.get(
-    "/",
-    roleMiddleware( ["user", "admin"] ),
-    getAllProducts
-);
-
-productRoutes.get(
-    "/:id",
-    roleMiddleware( ["user", "admin"] ),
-    getProductById
-);
+productRoutes.get("/" , getAllProducts);
+productRoutes.get("/:id" , getProductById);
 
 /* =================
     Admin Only
 ================= */
 
-productRoutes.post(
-    "/",
-    roleMiddleware( ["admin"] ),
-    upload.single('image'),
-    createProduct
-);
-productRoutes.put(
-    "/:id",
-    roleMiddleware( ["admin"] ),
-    updateProductById
-);
-productRoutes.delete(
-    "/:id",
-    roleMiddleware( ["admin"] ),
-    deleteProductById
-);
+productRoutes.post("/", roleMiddleware( ["admin" , "manager"] ), upload.single('image'), createProduct);
+productRoutes.put("/:id", roleMiddleware( ["admin" , "manager"] ), updateProductById);
+productRoutes.delete("/:id", roleMiddleware( ["admin" , "manager"] ), deleteProductById);

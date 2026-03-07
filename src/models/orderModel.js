@@ -12,11 +12,17 @@ const OrderSchema = new mongoose.Schema(
     },
     items: [
       {
+        // menuItem: {
+        //   type: mongoose.Schema.Types.ObjectId,
+        //   ref: "MenuItem",
+        // },
         productId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
           required: true,
         },
+        name: String,
+        price: Number,
         quantity: {
           type: Number,
           required: true,
@@ -24,10 +30,17 @@ const OrderSchema = new mongoose.Schema(
         },
       },
     ],
-    totalPrice: Number,
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
+    // totalAmount: {
+    //   type: Number,
+    //   required: true,
+    // },
     status: {
       type: String,
-      enum: ["pending", "preparing", "delivered"],
+      enum: ["pending", "confirmed", "preparing", "ready", "delivered", "cancelled"],
       default: "pending",
     },
   },
